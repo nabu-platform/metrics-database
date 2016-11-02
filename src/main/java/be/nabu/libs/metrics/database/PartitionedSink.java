@@ -175,6 +175,7 @@ public class PartitionedSink implements HistorySink, StatisticsContainer {
 					}
 				}, false);
 			}
+			statistics.push(timestamp, value);
 		}
 		catch (IOException e) {
 			throw new RuntimeException(e);
