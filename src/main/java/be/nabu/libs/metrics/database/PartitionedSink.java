@@ -22,6 +22,7 @@ import be.nabu.libs.metrics.core.api.SinkSnapshot;
 import be.nabu.libs.metrics.core.api.SinkValue;
 import be.nabu.libs.metrics.core.api.SinkStatistics;
 import be.nabu.libs.metrics.core.api.StatisticsContainer;
+import be.nabu.libs.metrics.core.api.TaggableSink;
 import be.nabu.libs.metrics.core.sinks.StatisticsSink;
 import be.nabu.libs.resources.ResourceUtils;
 import be.nabu.libs.resources.api.ManageableContainer;
@@ -34,7 +35,7 @@ import be.nabu.utils.io.api.ByteBuffer;
 import be.nabu.utils.io.api.ReadableContainer;
 import be.nabu.utils.io.api.WritableContainer;
 
-public class PartitionedSink implements HistorySink, StatisticsContainer {
+public class PartitionedSink implements HistorySink, StatisticsContainer, TaggableSink {
 
 	private static final int WINDOW = 100;
 	
@@ -75,10 +76,12 @@ public class PartitionedSink implements HistorySink, StatisticsContainer {
 		}
 	}
 	
+	@Override
 	public String getTag(String key) {
 		return getProperties().getProperty(key);
 	}
 	
+	@Override
 	public void setTag(String key, String value) {
 		if (value == null) {
 			getProperties().remove(key);
@@ -89,6 +92,7 @@ public class PartitionedSink implements HistorySink, StatisticsContainer {
 		saveProperties();
 	}
 	
+	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Collection<String> getTags() {
 		Set keySet = getProperties().keySet();
